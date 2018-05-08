@@ -1,2 +1,5 @@
 <!--pages/home/home.wxml-->
-<text>pages/home/home.wxml</text>
+<view class='guide'>
+  <image class='guide-top-img' src='../images/guide_top.png' mode='widthFix'></image>
+  <button class='start-btn'>开始</button>
+</view>
