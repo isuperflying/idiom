@@ -1,7 +1,8 @@
-{
+           {
   "pages":[
     "pages/home/home",
     "pages/index/index",
+    "pages/content/index",
     "pages/logs/logs"
   ],
   "window":{

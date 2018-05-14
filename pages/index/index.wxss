@@ -16,6 +16,10 @@
   color: #aaa;
 }
 
+page {
+  background-color: #f7be86;
+}
+
 .usermotto {
   margin-top: 200px;
 }

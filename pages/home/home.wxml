@@ -1,5 +1,5 @@
 <!--pages/home/home.wxml-->
 <view class='guide'>
   <image class='guide-top-img' src='../images/guide_top.png' mode='widthFix'></image>
-  <button class='start-btn'>开始</button>
+  <button class='start-btn' bindtap='start'>开始</button>
 </view>

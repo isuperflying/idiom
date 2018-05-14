@@ -17,6 +17,7 @@ page{
 
 .start-btn{
   width: 92%;
+  margin-top: 50%;
   font-size:24px;
   background: #ff4c1f;
   border: 3px #ff4c1f;
