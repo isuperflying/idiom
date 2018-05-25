@@ -1,5 +1,6 @@
 // pages/content/index.js
 var allSelected = require('../../utils/data.js')
+var currentIndex = 0;
 Page({
 
   /**
@@ -63,6 +64,7 @@ Page({
    * 获取新数据
    */
   generateNewData() {
+    console.log('load--->')
     if (this.data.sorted.length <= 0) {
       console.log("通关...");
       return;
@@ -70,17 +72,41 @@ Page({
     for (let i = 0; i < this.data.selectedContent.length; i++) {
       this.data.selectedContent[i].content = "";
     }
-    let index = this.data.sorted.shift();
-    this.data.curImgUrl = this.data.basePath + this.data.pics[index];
-    this.data.curCorrectText = this.data.correctTexts[index];
-    this.generateText();
-    //更新数据
-    this.setData({
-      curImgUrl: this.data.curImgUrl,
-      curCorrectText: this.data.curCorrectText,
-      selectContent: this.data.selectContent,
-      selectedContent: this.data.selectedContent
-    });
+    // let index = this.data.sorted.shift();
+    // this.data.curImgUrl = this.data.basePath + this.data.pics[index];
+    // this.data.curCorrectText = this.data.correctTexts[index];
+    // this.generateText();
+    // //更新数据
+    // this.setData({
+    //   curImgUrl: this.data.curImgUrl,
+    //   curCorrectText: this.data.curCorrectText,
+    //   selectContent: this.data.selectContent,
+    //   selectedContent: this.data.selectedContent
+    // });
+    var that = this;
+    wx.request({
+      url: 'http://127.0.0.1:3000/query',
+      method: 'GET',
+      data: {
+        'page': 1
+      },
+      success: function (res) {
+        console.log(res.data.data[currentIndex])
+        //let index = that.data.sorted.shift();
+        that.data.curImgUrl = res.data.data[currentIndex]['img_url'];
+        that.data.curCorrectText = res.data.data[currentIndex]['name'];
+        that.generateText();
+        //更新数据
+        that.setData({
+          curImgUrl: that.data.curImgUrl,
+          curCorrectText: that.data.curCorrectText,
+          selectContent: that.data.selectContent,
+          selectedContent: that.data.selectedContent
+        });
+        currentIndex++;
+      }
+    })
+
   },
 
   /**
@@ -144,7 +170,7 @@ Page({
   onSelected: function (event) {
     let content = event.target.dataset.content;
     let index = event.target.dataset.id;
-    if (content != "") {
+    if (content) {
       this.data.selectedContent[index].content = "";
       this.setData({ selectedContent: this.data.selectedContent });
     }

@@ -1,13 +1,11 @@
 <!--pages/content/index.wxml-->
 <view style='position: relative;'>
   <view class='container'>
-    <view class='ads'>
-      <text>【您已获得一个红包，打开支付宝即可领取】</text>
-    </view>
+    
     <view class='c-display'>
       <view class='display-others'></view>
       <view class='display-content'>
-        <image class="content-img" src='{{curImgUrl}}'></image>
+        <image class="content-img" mode='widthFix' src='{{curImgUrl}}'></image>
       </view>
       <view class='display-opts'>
         <button class='btn-alert' bindtap='onPrompt' size='mini'>
