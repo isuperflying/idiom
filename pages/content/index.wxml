@@ -8,12 +8,8 @@
         <image class="content-img" mode='widthFix' src='{{curImgUrl}}'></image>
       </view>
       <view class='display-opts'>
-        <button class='btn-alert' bindtap='onPrompt' size='mini'>
-          提示
-        </button>
-        <button open-type="share" class='btn-share' size='mini'>
-          分享
-        </button>
+        <image class='btn-hint' src='../images/btn_tishi_normal.png' bindtap='onPrompt'></image>
+        <!-- <image class='btn-result' src='../images/btn_answer_result.png' bindtap='btn-share'></image> -->
       </view>
     </view>
     <view class='c-opts'>
@@ -36,5 +32,5 @@
     </view>
   </view>
   <!--弹窗  -->
-  <dialog is-show="{{isComplete}}" is-pass="{{isTrue}}" bindonNext="generateNewData"/>
+  <dialog is-show="{{isComplete}}" is-pass="{{isTrue}}" is-over='{{isDone}}' bindonNext="generateNewData"/>
 </view>

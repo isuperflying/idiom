@@ -1,6 +1,8 @@
 // pages/content/index.js
 var allSelected = require('../../utils/data.js')
 var currentIndex = 0;
+var allData;
+var page = 0;
 Page({
 
   /**
@@ -25,6 +27,7 @@ Page({
     allSelected: allSelected.mtData().list,
     isTrue: false,
     isComplete: false,
+    isDone :false
   },
 
   /**
@@ -72,6 +75,8 @@ Page({
     for (let i = 0; i < this.data.selectedContent.length; i++) {
       this.data.selectedContent[i].content = "";
     }
+
+
     // let index = this.data.sorted.shift();
     // this.data.curImgUrl = this.data.basePath + this.data.pics[index];
     // this.data.curCorrectText = this.data.correctTexts[index];
@@ -83,30 +88,50 @@ Page({
     //   selectContent: this.data.selectContent,
     //   selectedContent: this.data.selectedContent
     // });
-    var that = this;
-    wx.request({
-      url: 'http://127.0.0.1:3000/query',
-      method: 'GET',
-      data: {
-        'page': 1
-      },
-      success: function (res) {
-        console.log(res.data.data[currentIndex])
-        //let index = that.data.sorted.shift();
-        that.data.curImgUrl = res.data.data[currentIndex]['img_url'];
-        that.data.curCorrectText = res.data.data[currentIndex]['name'];
-        that.generateText();
-        //更新数据
-        that.setData({
-          curImgUrl: that.data.curImgUrl,
-          curCorrectText: that.data.curCorrectText,
-          selectContent: that.data.selectContent,
-          selectedContent: that.data.selectedContent
-        });
-        currentIndex++;
-      }
-    })
 
+
+    var that = this;
+    if(currentIndex % 20 == 0){
+      page++;
+      wx.request({
+        url: 'https://www.antleague.com/query',
+        method: 'GET',
+        data: {
+          'page': page
+        },
+        success: function (res) {
+          if (allData){
+            allData = allData.concat(res.data.data)
+          }else{
+            allData = res.data.data;
+          }
+
+          that.data.curImgUrl = allData[currentIndex]['img_url'];
+          that.data.curCorrectText = allData[currentIndex]['name'];
+          that.generateText();
+          //更新数据
+          that.setData({
+            curImgUrl: that.data.curImgUrl,
+            curCorrectText: that.data.curCorrectText,
+            selectContent: that.data.selectContent,
+            selectedContent: that.data.selectedContent
+          });
+          currentIndex++;
+        }
+      })
+    }else{
+      that.data.curImgUrl = allData[currentIndex]['img_url'];
+      that.data.curCorrectText = allData[currentIndex]['name'];
+      that.generateText();
+      //更新数据
+      that.setData({
+        curImgUrl: that.data.curImgUrl,
+        curCorrectText: that.data.curCorrectText,
+        selectContent: that.data.selectContent,
+        selectedContent: that.data.selectedContent
+      });
+      currentIndex++;
+    }
   },
 
   /**
@@ -162,6 +187,11 @@ Page({
       this.setData({ isTrue: this.data.isTrue });
     }
     this.setData({ isComplete: this.data.isComplete });
+
+    if (this.data.sorted.length <= 0) {
+      this.setData({ isDone: true });
+    }
+    
   },
 
   /**
@@ -187,6 +217,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '成语大师',
+    })
+    currentIndex = 0;
     //生成随机排序辅助数组
     for (let i = 0; i < this.data.pics.length; i++) {
       this.data.sorted.push(i);

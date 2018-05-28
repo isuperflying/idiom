@@ -11,6 +11,10 @@ Component({
     isPass: {
       type: Boolean,
       value: false,
+    },
+    isOver: {
+      type: Boolean,
+      value: false,
     }
   },
 
@@ -35,7 +39,13 @@ Component({
       this.triggerEvent('onNext', myEventDetail, myEventOption)
       //隐藏dialog
       this.properties.isShow = false;
-      this.setData({ isShow: this.properties.isShow });
+      this.properties.isOver = false;
+      this.setData({ isShow: this.properties.isShow, isOver: this.properties.isOver });
+    },
+    onDone:function(){
+      wx.navigateTo({
+        url: '../content/index',
+      })
     }
   }
 })
